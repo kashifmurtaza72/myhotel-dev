@@ -6,7 +6,7 @@ app.use(bodyParser.json()); // req.body
 
 const passport = require("./auth");
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;  
 
 //Middleware
 const logRequest = (req, res, next) => {
