@@ -46,7 +46,7 @@ personSchema.pre('save', async function (next) {
     // hash password generation
     const salt = await bcrypt.genSalt(10);
 
-    const hashedPassword = await bcrypt.hashedPassword(person.password, salt);
+    const hashedPassword = await bcrypt.hash(person.password, salt);
 
     //Override the plain password with the hashed one
     person.password = hashedPassword;
@@ -55,6 +55,17 @@ personSchema.pre('save', async function (next) {
 
   }
 });
+
+personSchema.methods.comparePassword = async function(candidatePassword) {
+  try {
+    //use bcrypt to comapre the provided password with the hashed password
+    const isMatch = await bcrypt.compare(candidatePassword, this.password);
+    return isMatch;
+
+  }catch(err) {
+    throw err; 
+  }
+}
 
 // Create Person model
 const Person = mongoose.model("Person", personSchema);
